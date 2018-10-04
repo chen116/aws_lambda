@@ -17,7 +17,7 @@ def meow(event, context):
     # word = (base64.b64encode(buffer))
     # body = (base64.b64decode(word))
 
-    print(event)
+    print(json.loads(event))
     print("Time remaining (MScvy):", context.get_remaining_time_in_millis())
     return {
         "statusCode": 200,
