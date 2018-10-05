@@ -3,6 +3,7 @@ import cv2
 import io
 import numpy as np
 import base64
+import pika
 def meow(event, context):
 
 
