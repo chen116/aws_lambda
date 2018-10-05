@@ -41,7 +41,7 @@ def meow(event, context):
 #    return body
     return {
         "statusCode": 200,
-        "body": "sssf"
+        "body": str(len(faces))
     }
 
 
