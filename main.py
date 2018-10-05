@@ -16,7 +16,7 @@ def meow(event, context):
     img = cv2.filter2D(img, -1, kernel_sharpening)
     retval, buffer = cv2.imencode('.jpg', img)
     word = (base64.b64encode(buffer))
-    body = (base64.b64decode(word))
+    body = (base64.b64decode(word)).decode('iso_8859_1')
 
 #    credentials = pika.PlainCredentials('kat', 'meow')
 #    parameters = pika.ConnectionParameters('128.125.225.215',5672,'/',credentials)
@@ -25,11 +25,11 @@ def meow(event, context):
 #    channel.basic_publish(exchange='kex',routing_key='kq',body=body)
 #    connection.close()
 #    print("Time remaining (MScvy):", context.get_remaining_time_in_millis())
-    return body
-#    return {
-#        "statusCode": 200,
-#        "body": body
-#    }
+#    return body
+    return {
+        "statusCode": 200,
+        "body": body
+    }
 
 
 
