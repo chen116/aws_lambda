@@ -18,12 +18,12 @@ def meow(event, context):
     word = (base64.b64encode(buffer))
     body = (base64.b64decode(word))
 
-    #credentials = pika.PlainCredentials('kat', 'meow')
-    #parameters = pika.ConnectionParameters('128.125.225.215',5672,'/',credentials)
-    #connection = pika.BlockingConnection(parameters)
-    #channel = connection.channel()
-    #channel.basic_publish(exchange='kex',routing_key='kq',body=body)
-    #connection.close()
+    credentials = pika.PlainCredentials('kat', 'meow')
+    parameters = pika.ConnectionParameters('128.125.225.215',5672,'/',credentials)
+    connection = pika.BlockingConnection(parameters)
+    channel = connection.channel()
+    channel.basic_publish(exchange='kex',routing_key='kq',body=body)
+    connection.close()
     print("Time remaining (MScvy):", context.get_remaining_time_in_millis())
     return {
         "statusCode": 200,
