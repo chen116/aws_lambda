@@ -14,6 +14,19 @@ def meow(event, context):
     img = cv2.resize(img, (3*w, 3*h), interpolation = cv2.INTER_CUBIC)   
     kernel_sharpening = np.array([[-1,-1,-1], [-1, 9,-1],[-1,-1,-1]])
     img = cv2.filter2D(img, -1, kernel_sharpening)
+
+    cascPath = "haarcascade_frontalface_default.xml"
+    faceCascade = cv2.CascadeClassifier(cascPath)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    faces = faceCascade.detectMultiScale(
+    gray,
+    scaleFactor=1.1,
+    minNeighbors=5,
+    minSize=(30, 30)
+    #flags = cv2.CV_HAAR_SCALE_IMAGE
+    )
+    print("Found {0} faces!".format(len(faces)))
+
     retval, buffer = cv2.imencode('.jpg', img)
     word = (base64.b64encode(buffer))
     body = (base64.b64decode(word))
