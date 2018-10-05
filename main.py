@@ -16,7 +16,7 @@ def meow(event, context):
     img = cv2.filter2D(img, -1, kernel_sharpening)
     retval, buffer = cv2.imencode('.jpg', img)
     word = (base64.b64encode(buffer))
-    body = (base64.b64decode(word)).decode("utf-8") 
+    body = (base64.b64decode(word))
 
 
 #    credentials = pika.PlainCredentials('kat', 'meow')
@@ -28,7 +28,7 @@ def meow(event, context):
 #    print("Time remaining (MScvy):", context.get_remaining_time_in_millis())
     return {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "body": body
     }
 
 
