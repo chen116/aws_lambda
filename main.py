@@ -11,9 +11,9 @@ def meow(event, context):
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     h, w = img.shape[:2]
     # #To shrink an image, it will generally look best with cv::INTER_AREA interpolation, whereas to enlarge an image, it will generally look best with cv::INTER_CUBIC (slow) or cv::INTER_LINEAR (faster but still looks OK).
-    img = cv2.resize(img, (3*w, 3*h), interpolation = cv2.INTER_CUBIC)   
-    kernel_sharpening = np.array([[-1,-1,-1], [-1, 9,-1],[-1,-1,-1]])
-    img = cv2.filter2D(img, -1, kernel_sharpening)
+    #img = cv2.resize(img, (3*w, 3*h), interpolation = cv2.INTER_CUBIC)   
+    #kernel_sharpening = np.array([[-1,-1,-1], [-1, 9,-1],[-1,-1,-1]])
+    #img = cv2.filter2D(img, -1, kernel_sharpening)
 
     cascPath = "haarcascade_frontalface_default.xml"
     faceCascade = cv2.CascadeClassifier(cascPath)
