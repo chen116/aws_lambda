@@ -6,14 +6,19 @@ import base64
 import pika
 def meow(event, context):
 
+    img  = cv2.imread(event['pic'])
+    # nparr = np.fromstring(base64.b64decode(event['body']), np.uint8)
+    # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-    nparr = np.fromstring(base64.b64decode(event['body']), np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+
     # h, w = img.shape[:2]
     # # #To shrink an image, it will generally look best with cv::INTER_AREA interpolation, whereas to enlarge an image, it will generally look best with cv::INTER_CUBIC (slow) or cv::INTER_LINEAR (faster but still looks OK).
     # img = cv2.resize(img, (3*w, 3*h), interpolation = cv2.INTER_CUBIC)   
     # kernel_sharpening = np.array([[-1,-1,-1], [-1, 9,-1],[-1,-1,-1]])
     # img = cv2.filter2D(img, -1, kernel_sharpening)
+
+
 
     cascPath = "haarcascade_frontalface_default.xml"
     faceCascade = cv2.CascadeClassifier(cascPath)
@@ -35,8 +40,8 @@ def meow(event, context):
     # nparr = np.fromstring(c,np.uint8) # ndarray
     # img = cv2.imdecode(nparr, cv2.IMREAD_COLOR) 
 
-
-    return {'body': c}
+    tx={'pic':c}
+    return tx
 #     credentials = pika.PlainCredentials('kat', 'meow')
 #     parameters = pika.ConnectionParameters('128.125.225.215',5672,'/',credentials)
 #     connection = pika.BlockingConnection(parameters)

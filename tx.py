@@ -7,7 +7,7 @@ import pika
 def meow(event, context):
 
 
-    nparr = np.fromstring(event['body'], np.uint8)
+    nparr = np.fromstring(event['pic'], np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     # h, w = img.shape[:2]
     # # #To shrink an image, it will generally look best with cv::INTER_AREA interpolation, whereas to enlarge an image, it will generally look best with cv::INTER_CUBIC (slow) or cv::INTER_LINEAR (faster but still looks OK).
