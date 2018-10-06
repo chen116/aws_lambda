@@ -1,0 +1,102 @@
+virtualenv -p /usr/bin/python3.6 py36cv
+cd py36cv
+source bin/activate
+
+
+pip install opencv-python-headless
+pip install pika
+cd py36cv/lib/python3.6/site-packages
+
+
+zip -r9 ~/py36cv.zip .
+zip -g py36cv.zip main.py
+zip -g py36cv.zip haarcascade_frontalface_default.xml
+
+
+https://docs.aws.amazon.com/lambda/latest/dg/with-s3-example-deployment-pkg.html
+
+
+nano main.py && zip -g py36cv.zip main.py && git add -u . && git add . && git commit -m 'a' && git push
+
+
+in aws console,
+
+upload the zip,
+
+to check log click monitor
+
+
+to test:
+
+
+tx:
+
+
+import requests
+import sys
+import os
+import time
+import base64
+
+
+import json
+pic_arr = []
+for i in range(5):
+    f=open("pic"+str(i)+".jpg", "rb") #3.7kiB in same folder
+    fileContent = f.read()
+    byteArr = bytearray(fileContent)
+    pic_arr.append(byteArr)
+
+word = (base64.b64encode(pic_arr[0])).decode("utf-8") 
+
+
+r = requests.post("https://74d6mzflyc.execute-api.us-east-1.amazonaws.com/default/test", data = (word), headers={str('Content-Type'): 'application/octet-stream'})#, headers={str('Content-Type'): 'application/octet-stream'})#, data= test_sentence)
+print(r.json())
+
+
+rx:
+
+
+#!/usr/bin/env python
+import pika
+from PIL import Image
+import io
+import time
+import sys
+# qu=input('queue name:')
+qu='kq'
+credentials = pika.PlainCredentials('kat', 'meow')
+parameters = pika.ConnectionParameters('128.125.225.215',
+                                       5672,
+                                       '/',
+                                       credentials)
+connection = pika.BlockingConnection(parameters)
+channel = connection.channel()
+
+
+channel.queue_declare(queue=qu)
+
+channel.exchange_declare(exchange='kex',exchange_type='direct')
+channel.queue_bind(exchange='kex',queue=qu)
+
+cnt = 0
+st = 0
+dnom = int(sys.argv[1])
+
+def callback(ch, method, properties, body):
+    print(str(time.time()))
+
+    global cnt
+    # global st
+    # if cnt%dnom == 0:
+    #     st = time.time()
+    cnt +=1
+    image = Image.open(io.BytesIO(body))
+    image.save("res"+str(cnt)+".jpg")
+    print("saved" ,body,cnt)
+    # print("saved" ,cnt)
+    # if cnt%dnom == 0:
+    #     print("time elapse: ",time.time() -st)
+channel.basic_consume(callback,queue=qu,no_ack=True)
+
+channel.start_consuming()
